@@ -1,25 +1,7 @@
-import React, {
-  useState,
-  useRef,
-  cloneElement,
-  createContext,
-  useContext
-} from "react";
+import React, { useState, useRef } from "react";
 import { ReactComponent as Arrow } from "./arrow.svg";
 
 export default function DropDown({ options, value, onChange }) {
-  return (
-    <Select value={value} onChange={onChange}>
-      {options.map((option) => (
-        <Option>{option}</Option>
-      ))}
-    </Select>
-  );
-}
-
-const SelectContext = createContext();
-
-export function Select({ children, value, onChange }) {
   const [open, setOpen] = useState(false);
   const ref = useRef();
 
@@ -42,22 +24,28 @@ export function Select({ children, value, onChange }) {
       </div>
       {open && (
         <ul className="options-container">
-          <SelectContext.Provider
-            value={{
-              selectedValue: value,
-              setSelectedValue: handleOptionClick
-            }}
-          >
-            {children}
-          </SelectContext.Provider>
+          {options.map((option) => (
+            <Option
+              key={option}
+              onClick={handleOptionClick}
+              selectedValue={value}
+            >
+              {option}
+            </Option>
+          ))}
         </ul>
       )}
     </div>
   );
 }
 
-export function Option({ children, disabled, ...props }) {
-  const { selectedValue, setSelectedValue } = useContext(SelectContext);
+export function Option({
+  children,
+  selectedValue,
+  onClick,
+  disabled,
+  ...props
+}) {
   let className = "option";
   if (selectedValue === children) {
     className += " selected";
@@ -66,11 +54,7 @@ export function Option({ children, disabled, ...props }) {
     className += " disabled";
   }
   return (
-    <li
-      {...props}
-      className={className}
-      onClick={() => setSelectedValue(children)}
-    >
+    <li {...props} className={className} onClick={() => onClick(children)}>
       {children}
     </li>
   );

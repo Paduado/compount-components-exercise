@@ -1,7 +1,6 @@
-import React, { cloneElement, useState } from "react";
+import React, { useState } from "react";
 import "./styles.css";
-import DropDown, { Select, Option } from "./DropDown";
-import Label from "./Label";
+import DropDown from "./DropDown";
 
 export default function App() {
   const [country, setCountry] = useState("Mexico");
@@ -12,25 +11,6 @@ export default function App() {
         onChange={setCountry}
         options={["Mexico", "USA", "Vietnam", "Spain"]}
       />
-      {/* <Select value={country} onChange={setCountry}>
-        <Group name="America">
-          <Option>Mexico</Option>
-          <Option disabled>USA</Option>
-        </Group>
-        <Label>Asia</Label>
-        <Option style={{ color: "green" }}>Vietnam</Option>
-        <Label>Europe</Label>
-        <Option>Spain</Option>
-      </Select> */}
     </div>
-  );
-}
-
-function Group({ name, children }) {
-  return (
-    <>
-      <Label>{name}</Label>
-      {children}
-    </>
   );
 }
